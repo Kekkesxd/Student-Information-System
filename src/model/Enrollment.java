@@ -19,6 +19,11 @@ public class Enrollment {
         return studentUsername + "," + courseCode;
     }
 
+    @Override
+    public String toString(){
+        return toFileString();
+    }
+
     //File-loading
     public static Enrollment fromFileString(String line){
         String[] parts = line.split(",");

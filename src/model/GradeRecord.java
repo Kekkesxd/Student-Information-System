@@ -55,6 +55,11 @@ public class GradeRecord {
         return studentUsername + "," + courseCode + "," + mideterm + "," + finalexam;
     }
 
+    @Override
+    public String toString(){
+        return toFileString();
+    }
+
     //File-loading
     public static GradeRecord fromFileString(String line){
         String[] parts = line.split(",");

@@ -27,9 +27,16 @@ public class Course {
         return courseCode + "," + courseName + "," + credit + "," + quota + "," + instructName;
     }
 
+    @Override
+    public String toString(){
+        return toFileString();
+    }
+
     //File loading
     public static Course fromFileString(String line){
         String[] parts = line.split(",");
         return new Course(parts[0], parts[1], Integer.parseInt(parts[2]), Integer.parseInt(parts[3]), parts[4]);
     }
+
+
 }

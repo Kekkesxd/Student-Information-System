@@ -25,6 +25,11 @@ public class User {
         return username + "," + password + "," + role + "," + fullName + "," + refID;
     }
 
+    @Override
+    public String toString(){
+        return toFileString();
+    }
+
     //File-loading
     public static User fromFileString(String line){
         String[] parts = line.split(",");

@@ -1,0 +1,105 @@
+package data;
+
+import model.*;
+import java.io.*;
+import java.util.*;
+
+public class DataStore {
+
+    public List<User> users = new ArrayList<>();
+    public List<StudentProfile> students = new ArrayList<>();
+    public List<Course> courses = new ArrayList<>();
+    public List<Enrollment> enrollments = new ArrayList<>();
+    public List<GradeRecord> grades = new ArrayList<>();
+
+    //File Pathing
+    private static final String USERS_FILE = "data/users.txt";
+    private static final String STUDENTS_FILE = "data/students.txt";
+    private static final String COURSES_FILE = "data/courses.txt";
+    private static final String ENROLLMENTS_FILE = "data/enrollments.txt";
+    private static final String GRADES_FILE = "data/grades.txt";
+
+
+    public void initialize(){
+        loadUsers();
+        loadStudents();
+        loadCourses();
+        loadEnrollments();
+        loadGrades();
+    }
+
+    //Save Method
+    public void saveUsers(){
+        saveToFile(USERS_FILE, users);
+    }
+    public void saveStudents(){
+        saveToFile(STUDENTS_FILE, students);
+    }
+    public void saveCourses(){
+        saveToFile(COURSES_FILE, courses);
+    }
+    public void saveEnrollments(){
+        saveToFile(ENROLLMENTS_FILE, enrollments);
+    }
+    public void saveGrades(){
+        saveToFile(GRADES_FILE, grades);
+    }
+
+    //Helper
+    //-- Aceepts any of type of list <T>
+    //Easier than having 5 different saving methods
+    private <T> void saveToFile(String path, List<T> list){
+        try (PrintWriter pw = new PrintWriter(new FileWriter(path))) {
+            for (T item : list){
+                pw.println(item.toString());
+            }
+        }catch (IOException e){
+            System.err.println("Error saving to " + path + ": " + e.getMessage());
+        }
+    }
+
+    //Loading Method
+    public void loadUsers(){
+        users.clear();
+        for(String line : readLines(USERS_FILE))
+            users.add(User.fromFileString(line));
+    }
+    public void loadStudents(){
+        students.clear();
+        for(String line : readLines(STUDENTS_FILE))
+            students.add(StudentProfile.fromFileString(line));
+    }
+    public void loadCourses(){
+        courses.clear();
+        for(String line : readLines(COURSES_FILE))
+            courses.add(Course.fromFileString(line));
+    }
+    public void loadEnrollments(){
+        enrollments.clear();
+        for(String line : readLines(ENROLLMENTS_FILE))
+            enrollments.add(Enrollment.fromFileString(line));
+    }
+    public void loadGrades(){
+        grades.clear();
+        for(String line : readLine(GRADES_FILE))
+            grades.add(GradeRecord.fromFileString(line));
+    }
+
+
+    //Helper - reading lines from a file, skips empty lines
+    private List<String> readLines(String path){
+        List<String> lines = new ArrayList<>();
+        File file = new File(path);
+        if(!file.exists()) return lines; // first run, files doesn't exist yet
+        try(BufferedReader br = new BufferedReader(new FileReader(file))){
+            String line;
+            while((line = br.readLine()) != null){
+                if(!line.trim().isEmpty())
+                    lines.add(line.trim());
+            }
+        }catch (IOException e){
+            System.err.println("Error reading " + path + ": " + e.getMessage());
+        }
+        return lines;
+    }
+}

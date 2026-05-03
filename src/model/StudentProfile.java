@@ -26,6 +26,11 @@ public class StudentProfile {
         return studentID + "," + fullName + "," + department + "," + year + "," + userName;
     }
 
+    @Override
+    public String toString(){
+        return toFileString();
+    }
+
     //File loading
     public static StudentProfile fromFileString(String line){
         String[] parts = line.split(",");
