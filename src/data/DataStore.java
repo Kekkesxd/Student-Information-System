@@ -81,7 +81,7 @@ public class DataStore {
     }
     public void loadGrades(){
         grades.clear();
-        for(String line : readLine(GRADES_FILE))
+        for(String line : readLines(GRADES_FILE))
             grades.add(GradeRecord.fromFileString(line));
     }
 
@@ -102,4 +102,76 @@ public class DataStore {
         }
         return lines;
     }
+
+    //Login screen authentication
+    public User authenticate(String username, String password){
+        for(User user : users){
+            if(user.username.equals(username) && user.password.equals(password)){
+                return user;
+            }
+        }
+        return null;
+    }
+
+    public User findUser(String username){
+        for (User user : users){
+            if(user.username.equals(username)){
+                return user;
+            }
+        }
+        return null;
+    }
+
+    //For searching the student list by username
+    public StudentProfile findStudentByUser(String username){
+        for (StudentProfile student : students){
+            if(student.userName.equals(username)){
+                return student;
+            }
+        }
+        return null;
+    }
+
+    public Course findCourse(String courseCode){
+        for( Course course : courses){
+            if(course.courseCode.equals(courseCode)){
+                return course;
+            }
+        }
+        return null;
+    }
+
+    //List because instructor can be teaching multiple courses
+    public List<Course> getCoursesByInstructor(String instructorUsername) {
+        List<Course> result = new ArrayList<>();
+        for (Course course : courses){
+            if(course.instructName.equals(instructorUsername)){
+                result.add(course);
+            }
+        }
+        return result;
+    }
+
+    //counts how many students are enrolled
+    public int countEnrollmentForCourse(String courseCode){
+        int count = 0;
+        for(Enrollment enrollment : enrollments){
+            if (enrollment.courseCode.equals(courseCode)){
+                count++;
+            }
+        }
+        return count;
+    }
+
+    //Checks for enrollments and if student is in specific course or not
+    public boolean isStudentEnrolled(String studentUsername, String courseCode){
+        for(Enrollment enrollment : enrollments){
+            if (enrollment.studentUsername.equals(studentUsername) && enrollment.courseCode.equals(courseCode)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 }
