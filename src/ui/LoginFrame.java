@@ -15,7 +15,7 @@ public class LoginFrame extends JFrame{
     public LoginFrame(DataStore ds){
         this.ds = ds;
         setTitle("University Automation App");
-        setSize(550, 550);
+        setSize(350,200 );
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
@@ -59,6 +59,12 @@ public class LoginFrame extends JFrame{
             return;
         }
 
+        this.dispose();
+        switch (user.role){
+            case "ADMIN":
+                new AdminPanel(ds, user);
+                break;
+        }
         JOptionPane.showMessageDialog(this, "Welcome " + user.fullName, "Success", JOptionPane.INFORMATION_MESSAGE);
     }
 
