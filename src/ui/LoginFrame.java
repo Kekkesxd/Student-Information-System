@@ -18,7 +18,6 @@ public class LoginFrame extends JFrame{
         setSize(350,200 );
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        setVisible(true);
 
         JPanel panel = new JPanel(new GridLayout(3, 2, 10 ,10));
         panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20 ,20));
@@ -38,6 +37,7 @@ public class LoginFrame extends JFrame{
         loginButton.addActionListener(e-> handleLogin());
 
         add(panel);
+        setVisible(true);
     }
 
     private void handleLogin(){
@@ -65,9 +65,5 @@ public class LoginFrame extends JFrame{
                 new AdminPanel(ds, user);
                 break;
         }
-        JOptionPane.showMessageDialog(this, "Welcome " + user.fullName, "Success", JOptionPane.INFORMATION_MESSAGE);
     }
-
-
-
 }

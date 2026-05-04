@@ -3,24 +3,24 @@ package model;
 public class GradeRecord {
 
     public String studentUsername, courseCode;
-    public double mideterm, finalexam;
+    public double midterm, finalexam;
 
-    public GradeRecord(String studentUsername, String courseCode, double mideterm, double finalexam){
+    public GradeRecord(String studentUsername, String courseCode, double midterm, double finalexam){
         this.studentUsername = studentUsername;
         this.courseCode = courseCode;
-        this.mideterm = mideterm;
+        this.midterm = midterm;
         this.finalexam = finalexam;
     }
 
     //Getters
     public String getStudentUsername() {return studentUsername;}
     public String getCourseCode() {return courseCode;}
-    public double getMideterm() {return mideterm;}
+    public double getMidterm() {return midterm;}
     public double getFinalexam() {return finalexam;}
 
 
     public double calcAverage(){
-        double avg = mideterm * 0.4 + finalexam * 0.6;
+        double avg = midterm * 0.4 + finalexam * 0.6;
         return avg;
     }
 
@@ -52,7 +52,7 @@ public class GradeRecord {
     }
     //File-Saving
     public String toFileString(){
-        return studentUsername + "," + courseCode + "," + mideterm + "," + finalexam;
+        return studentUsername + "," + courseCode + "," + midterm + "," + finalexam;
     }
 
     @Override

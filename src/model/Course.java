@@ -3,15 +3,15 @@ package model;
 public class Course {
 
 
-    public String courseCode, courseName, instructName;
+    public String courseCode, courseName, instructorUsername;
     public int credit, quota;
 
-    public Course(String courseCode, String courseName, int credit, int quota, String instructName){
+    public Course(String courseCode, String courseName, int credit, int quota, String instructorUsername){
         this.courseCode = courseCode;
         this.courseName = courseName;
         this.credit = credit;
         this.quota = quota;
-        this.instructName = instructName;
+        this.instructorUsername = instructorUsername;
     }
 
     //Getters
@@ -19,12 +19,12 @@ public class Course {
     public String getCourseName() {return courseName;}
     public int getCredit() {return credit;}
     public int getQuota() {return quota;}
-    public String getInstructName() {return instructName;}
+    public String getInstructName() {return instructorUsername;}
 
 
     //File Saving
     public String toFileString(){
-        return courseCode + "," + courseName + "," + credit + "," + quota + "," + instructName;
+        return courseCode + "," + courseName + "," + credit + "," + quota + "," + instructorUsername;
     }
 
     @Override

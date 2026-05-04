@@ -133,7 +133,16 @@ public class DataStore {
     //For searching the student list by username
     public StudentProfile findStudentByUser(String username) {
         for (StudentProfile student : students) {
-            if (student.userName.equals(username)) {
+            if (student.username.equals(username)) {
+                return student;
+            }
+        }
+        return null;
+    }
+
+    public StudentProfile findStudentById(String studentId){
+        for(StudentProfile student : students){
+            if(student.studentId.equals(studentId)){
                 return student;
             }
         }
@@ -153,7 +162,7 @@ public class DataStore {
     public List<Course> getCoursesByInstructor(String instructorUsername) {
         List<Course> result = new ArrayList<>();
         for (Course course : courses) {
-            if (course.instructName.equals(instructorUsername)) {
+            if (course.instructorUsername.equals(instructorUsername)) {
                 result.add(course);
             }
         }
@@ -229,7 +238,7 @@ public class DataStore {
     public void upsertGrade(String studentUsername, String courseCode, double midterm, double finalExam){
         GradeRecord existing = findGrade(studentUsername, courseCode);
         if(existing != null){
-            existing.mideterm =midterm;
+            existing.midterm =midterm;
             existing.finalexam =finalExam;
         }else {
             grades.add(new GradeRecord(studentUsername, courseCode, midterm, finalExam));
@@ -238,7 +247,7 @@ public class DataStore {
     }
 
     public double calculateGPA(String studentUsername){
-        List<GradeRecord> studentGrades = new ArrayList<>();
+        List<GradeRecord> studentGrades = getGrades(studentUsername);
         if(studentGrades.isEmpty()) return 0.0;
 
         double totalPoints = 0;

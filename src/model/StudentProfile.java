@@ -2,28 +2,28 @@ package model;
 
 public class StudentProfile {
 
-    public String studentID, fullName, department, userName;
+    public String studentId, fullName, department, username;
     public int year;
 
-    public StudentProfile(String studentID, String fullName, String department, int year, String userName){
-        this.studentID = studentID;
+    public StudentProfile(String studentId, String fullName, String department, int year, String username){
+        this.studentId = studentId;
         this.fullName = fullName;
         this.department = department;
         this.year = year;
-        this.userName = userName;
+        this.username = username;
     }
 
     //Getters
-    public String getStudentID() {return studentID;}
+    public String getStudentID() {return studentId;}
     public String getFullName() {return fullName;}
     public String getDepartment() {return department;}
     public int getYear() {return year;}
-    public String getUserName() {return userName;}
+    public String getUsername() {return username;}
 
 
     //File Saving
     public String toFileString(){
-        return studentID + "," + fullName + "," + department + "," + year + "," + userName;
+        return studentId + "," + fullName + "," + department + "," + year + "," + username;
     }
 
     @Override
