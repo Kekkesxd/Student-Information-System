@@ -32,7 +32,7 @@ public class User {
 
     //File-loading
     public static User fromFileString(String line){
-        String[] parts = line.split(",");
+        String[] parts = line.split(",", -1);
         return new User(parts[0], parts[1], parts[2], parts[3], parts[4]);
     }
 }

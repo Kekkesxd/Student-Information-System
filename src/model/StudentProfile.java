@@ -33,7 +33,7 @@ public class StudentProfile {
 
     //File loading
     public static StudentProfile fromFileString(String line){
-        String[] parts = line.split(",");
+        String[] parts = line.split(",", -1);
         return new StudentProfile(parts[0], parts[1], parts[2], Integer.parseInt(parts[3]), parts[4]);
     }
 }
