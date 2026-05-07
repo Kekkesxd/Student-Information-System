@@ -2,30 +2,28 @@ package ui;
 
 import data.DataStore;
 import model.*;
+import main.UniversityAutoApp;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
-public class AdminPanel extends JFrame {
+public class AdminPanel extends JPanel {
 
     private DataStore ds;
     private User currUser;
+    private UniversityAutoApp app;
 
     private DefaultTableModel userTableModel, studentTableModel, courseTableModel, overviewTableModel;
     private JComboBox<String> studentUserCombo, instructorCombo;
     private JLabel totalUsersLabel, totalStudentsLabel, totalInstructorsLabel, totalCoursesLabel, totalEnrollmentsLabel;
 
-    public AdminPanel(DataStore ds, User currUser) {
+    public AdminPanel(DataStore ds, User currUser, UniversityAutoApp app) {
         this.ds = ds;
         this.currUser = currUser;
+        this.app = app;
 
-        setTitle("Admin Panel - " + currUser.fullName);
-        setSize(900, 650);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
         setLayout(new BorderLayout(10, 10));
-
         JPanel headPanel = new JPanel(new BorderLayout());
 
         JLabel headLabel = new JLabel("Admin Panel - Logged in as: " + currUser.fullName);
@@ -66,7 +64,6 @@ public class AdminPanel extends JFrame {
         });
 
         add(tabs, BorderLayout.CENTER);
-        setVisible(true);
     }
 
     private JPanel createUsersPanel() {
@@ -543,8 +540,7 @@ public class AdminPanel extends JFrame {
         );
 
         if (confirm == JOptionPane.YES_OPTION) {
-            this.dispose();
-            new LoginFrame(ds);
+            app.logout();
         }
     }
     private void styleTable(JTable table) {

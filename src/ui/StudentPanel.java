@@ -2,27 +2,26 @@ package ui;
 
 import data.DataStore;
 import model.*;
+import main.UniversityAutoApp;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
-public class StudentPanel extends JFrame{
+public class StudentPanel extends JPanel{
     private DataStore ds;
     private User currUser;
+    private UniversityAutoApp app;
 
     private DefaultTableModel availCoursesModel, myCoursesModel, transcModel;
 
     private JLabel gpaLabel;
 
-    public StudentPanel(DataStore ds, User currUser){
+    public StudentPanel(DataStore ds, User currUser, UniversityAutoApp app){
         this.ds = ds;
         this.currUser = currUser;
+        this.app = app;
 
-        setTitle("Student Panel " + currUser.fullName);
-        setSize(850, 600);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
         setLayout(new BorderLayout(10, 10));
 
         JPanel headPanel = new JPanel(new BorderLayout());
@@ -55,8 +54,6 @@ public class StudentPanel extends JFrame{
         });
 
         add(tabs, BorderLayout.CENTER);
-
-        setVisible(true);
     }
 
     private JPanel createAvailCoursesPanel(){
@@ -291,8 +288,7 @@ public class StudentPanel extends JFrame{
         );
 
         if (confirm == JOptionPane.YES_OPTION) {
-            this.dispose();
-            new LoginFrame(ds);
+           app.logout();
         }
     }
     private void styleTable(JTable table) {
@@ -309,16 +305,6 @@ public class StudentPanel extends JFrame{
                 BorderFactory.createTitledBorder(title),
                 BorderFactory.createEmptyBorder(10, 10, 10, 10)
         ));
-        return panel;
-    }
-
-    private JPanel createButtonPanel(JButton... buttons) {
-        JPanel panel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 5));
-
-        for (JButton button : buttons) {
-            panel.add(button);
-        }
-
         return panel;
     }
 }

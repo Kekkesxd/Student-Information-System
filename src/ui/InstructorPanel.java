@@ -2,28 +2,27 @@ package ui;
 
 import data.DataStore;
 import model.*;
+import main.UniversityAutoApp;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
-public class InstructorPanel extends JFrame{
+public class InstructorPanel extends JPanel{
     private DataStore ds;
     private User currUser;
+    private UniversityAutoApp app;
 
     private DefaultTableModel myCoursesModel, gradesModel;
 
     private JComboBox<String> courseCombo;
     private JTextField midField, finalField;
 
-    public InstructorPanel(DataStore ds, User currUser){
+    public InstructorPanel(DataStore ds, User currUser, UniversityAutoApp app){
         this.ds = ds;
         this.currUser = currUser;
+        this.app = app;
 
-        setTitle("Instructor Panel - " +currUser.fullName);
-        setSize(850, 600);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
         setLayout(new BorderLayout(10, 10));
 
         JPanel headPanel = new JPanel(new BorderLayout());
@@ -55,8 +54,6 @@ public class InstructorPanel extends JFrame{
         });
 
         add(tabs, BorderLayout.CENTER);
-
-        setVisible(true);
     }
 
     private JPanel createCoursesPanel(){
@@ -282,8 +279,7 @@ public class InstructorPanel extends JFrame{
         );
 
         if (confirm == JOptionPane.YES_OPTION) {
-            this.dispose();
-            new LoginFrame(ds);
+           app.logout();
         }
     }
     private void styleTable(JTable table) {
@@ -300,16 +296,6 @@ public class InstructorPanel extends JFrame{
                 BorderFactory.createTitledBorder(title),
                 BorderFactory.createEmptyBorder(10, 10, 10, 10)
         ));
-        return panel;
-    }
-
-    private JPanel createButtonPanel(JButton... buttons) {
-        JPanel panel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 5));
-
-        for (JButton button : buttons) {
-            panel.add(button);
-        }
-
         return panel;
     }
 }

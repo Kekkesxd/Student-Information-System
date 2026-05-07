@@ -1,26 +1,27 @@
 package ui;
 
 import data.DataStore;
+import main.UniversityAutoApp;
 import model.User;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class LoginFrame extends JFrame{
+public class LoginPanel extends JPanel{
 
     private DataStore ds;
+    private UniversityAutoApp app;
+
     private JTextField usernameField;
     private JPasswordField passwordField;
 
-    public LoginFrame(DataStore ds){
+    public LoginPanel(DataStore ds, UniversityAutoApp app){
         this.ds = ds;
-        setTitle("University Automation App");
-        setSize(700,450 );
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
+        this.app = app;
+
+        setLayout(new GridBagLayout());
 
         JPanel mainPanel = new JPanel(new GridBagLayout());
-
         JPanel loginCard = new JPanel(new GridBagLayout());
         loginCard.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createTitledBorder("Login"),
@@ -70,44 +71,26 @@ public class LoginFrame extends JFrame{
 
         mainPanel.add(loginCard);
         add(mainPanel);
-
-        setVisible(true);
     }
 
-    private void handleLogin(){
+    private void handleLogin() {
         String username = usernameField.getText().trim();
         String password = new String(passwordField.getPassword()).trim();
 
-        if(username.isEmpty()){
-            JOptionPane.showMessageDialog(this, "Please enter your username!", "Error",JOptionPane.ERROR_MESSAGE);
+        if (username.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter your username!", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        if(password.isEmpty()){
+        if (password.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please Enter your password!", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         User user = ds.authenticate(username, password);
-        if(user == null){
+        if (user == null) {
             JOptionPane.showMessageDialog(this, "Invalid username or password!", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-
-        this.dispose();
-
-        switch (user.role){
-            case "ADMIN":
-                new AdminPanel(ds, user);
-                break;
-            case "STUDENT":
-                new StudentPanel(ds, user);
-                break;
-            case "INSTRUCTOR":
-                new InstructorPanel(ds, user);
-                break;
-            default:
-                JOptionPane.showMessageDialog(null, "Unknown role: " + user.role, "Error", JOptionPane.ERROR_MESSAGE);
-                break;
-        }
+        app.showPanelForUser(user);
     }
 }
