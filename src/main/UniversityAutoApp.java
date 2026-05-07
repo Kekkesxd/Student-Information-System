@@ -1,6 +1,3 @@
-
-
-
 package main;
 
 import data.DataStore;
@@ -13,11 +10,6 @@ public class UniversityAutoApp {
 
     public static void main(String[] args) {
         ds.initialize();
-
-        if(ds.users.isEmpty()){
-            ds.users.add(new model.User("admin", "admin123", "ADMIN", "System Admin", ""));
-            ds.saveUsers();
-        }
 
         SwingUtilities.invokeLater(() -> new LoginFrame(ds));
 

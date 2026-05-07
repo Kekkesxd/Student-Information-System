@@ -71,6 +71,7 @@ public class StudentPanel extends JFrame{
         };
 
         JTable table = new JTable(availCoursesModel);
+        styleTable(table);
         JScrollPane scrollPane = new JScrollPane(table);
 
         JButton enrollButton = new JButton("Enroll Selected Course");
@@ -90,8 +91,11 @@ public class StudentPanel extends JFrame{
             enrollInCourse(courseCode);
         });
 
-        panel.add(scrollPane, BorderLayout.CENTER);
-        panel.add(buttonPanel, BorderLayout.SOUTH);
+        JPanel tableCard = createCardPanel("Available Courses:");
+        tableCard.add(scrollPane, BorderLayout.CENTER);
+        tableCard.add(buttonPanel, BorderLayout.SOUTH);
+
+        panel.add(tableCard, BorderLayout.CENTER);
 
         refreshAvailCoursesTable();
 
@@ -110,6 +114,7 @@ public class StudentPanel extends JFrame{
         };
 
         JTable table = new JTable(myCoursesModel);
+        styleTable(table);
         JScrollPane scrollPane = new JScrollPane(table);
 
         JButton dropCourseBtn = new JButton("Drop Selected Course");
@@ -130,8 +135,11 @@ public class StudentPanel extends JFrame{
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         buttonPanel.add(dropCourseBtn);
 
-        panel.add(scrollPane, BorderLayout.CENTER);
-        panel.add(buttonPanel, BorderLayout.SOUTH);
+        JPanel tableCard = createCardPanel("My Courses:");
+        tableCard.add(scrollPane, BorderLayout.CENTER);
+        tableCard.add(buttonPanel, BorderLayout.SOUTH);
+
+        panel.add(tableCard, BorderLayout.CENTER);
 
         refreshMyCoursesTable();
 
@@ -149,16 +157,22 @@ public class StudentPanel extends JFrame{
             }
         };
         JTable table = new JTable(transcModel);
+        styleTable(table);
         JScrollPane scrollPane = new JScrollPane(table);
 
         gpaLabel = new JLabel("GPA: 0.00");
-        gpaLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        gpaLabel.setFont(new Font("Arial", Font.BOLD, 18));
 
-        JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        bottomPanel.add(gpaLabel);
+        JPanel gpaPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 8));
+        gpaPanel.setBorder(BorderFactory.createTitledBorder("GPA Summary"));
+        gpaPanel.add(gpaLabel);
+        gpaPanel.setPreferredSize(new Dimension(0, 65));
 
-        panel.add(scrollPane, BorderLayout.CENTER);
-        panel.add(bottomPanel, BorderLayout.SOUTH);
+        JPanel tableCard = createCardPanel("Transcript");
+        tableCard.add(scrollPane, BorderLayout.CENTER);
+
+        panel.add(gpaPanel, BorderLayout.NORTH);
+        panel.add(tableCard, BorderLayout.CENTER);
 
         refreshTranscriptTable();
 
@@ -280,5 +294,31 @@ public class StudentPanel extends JFrame{
             this.dispose();
             new LoginFrame(ds);
         }
+    }
+    private void styleTable(JTable table) {
+        table.setRowHeight(30);
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        table.setFillsViewportHeight(true);
+        table.getTableHeader().setReorderingAllowed(false);
+        table.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
+    }
+
+    private JPanel createCardPanel(String title) {
+        JPanel panel = new JPanel(new BorderLayout(10, 10));
+        panel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createTitledBorder(title),
+                BorderFactory.createEmptyBorder(10, 10, 10, 10)
+        ));
+        return panel;
+    }
+
+    private JPanel createButtonPanel(JButton... buttons) {
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 5));
+
+        for (JButton button : buttons) {
+            panel.add(button);
+        }
+
+        return panel;
     }
 }

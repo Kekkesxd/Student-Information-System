@@ -21,6 +21,11 @@ public class DataStore {
 
 
     public void initialize() {
+        File dataFolder = new File("data");
+        if(!dataFolder.exists()){
+            dataFolder.mkdir();
+        }
+
         loadUsers();
         loadStudents();
         loadCourses();
@@ -50,7 +55,7 @@ public class DataStore {
     }
 
     //Helper
-    //-- Aceepts any of type of list <T>
+    //-- Accepts any of type of list <T>
     //Easier than having 5 different saving methods
     private <T> void saveToFile(String path, List<T> list) {
         try (PrintWriter pw = new PrintWriter(new FileWriter(path))) {

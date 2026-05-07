@@ -83,10 +83,10 @@ public class AdminPanel extends JFrame {
         };
 
         JTable userTable = new JTable(userTableModel);
+        styleTable(userTable);
         JScrollPane userScroll = new JScrollPane(userTable);
 
         JPanel addUserForm = new JPanel(new GridLayout(6, 2, 10, 10));
-        addUserForm.setBorder(BorderFactory.createTitledBorder("Add User"));
 
         JTextField newUsername = new JTextField();
         JTextField newPassword = new JTextField();
@@ -155,8 +155,16 @@ public class AdminPanel extends JFrame {
 
         refreshUserTable();
 
-        usersPanel.add(userScroll, BorderLayout.CENTER);
-        usersPanel.add(addUserForm, BorderLayout.SOUTH);
+        addUserForm.setBorder(BorderFactory.createEmptyBorder(0, 0, 0,0));
+
+        JPanel tableCard = createCardPanel("Users");
+        tableCard.add(userScroll, BorderLayout.CENTER);
+
+        JPanel formCard = createCardPanel("Add User");
+        formCard.add(addUserForm, BorderLayout.CENTER);
+
+        usersPanel.add(tableCard, BorderLayout.CENTER);
+        usersPanel.add(formCard, BorderLayout.SOUTH);
         return usersPanel;
     }
 
@@ -175,12 +183,12 @@ public class AdminPanel extends JFrame {
         };
 
         JTable studentTable = new JTable(studentTableModel);
+        styleTable(studentTable);
         JScrollPane studentScroll = new JScrollPane(studentTable);
 
 
         //Adding Student Form
         JPanel addStudentForm = new JPanel(new GridLayout(6, 2, 10, 10));
-        addStudentForm.setBorder(BorderFactory.createTitledBorder("Add Student Profile"));
 
         JTextField newStudentID = new JTextField();
         JTextField newStudentName = new JTextField();
@@ -266,8 +274,16 @@ public class AdminPanel extends JFrame {
             }
         });
 
-        studentsPanel.add(studentScroll, BorderLayout.CENTER);
-        studentsPanel.add(addStudentForm, BorderLayout.SOUTH);
+        addStudentForm.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
+
+        JPanel tableCard = createCardPanel("Student Profiles");
+        tableCard.add(studentScroll, BorderLayout.CENTER);
+
+        JPanel formCard = createCardPanel("Add Student Profile");
+        formCard.add(addStudentForm, BorderLayout.CENTER);
+
+        studentsPanel.add(tableCard, BorderLayout.CENTER);
+        studentsPanel.add(formCard, BorderLayout.SOUTH);
 
         refreshStudentTable();
 
@@ -289,10 +305,10 @@ public class AdminPanel extends JFrame {
         };
 
         JTable courseTable = new JTable(courseTableModel);
+        styleTable(courseTable);
         JScrollPane courseScroll = new JScrollPane(courseTable);
 
         JPanel addCourseForm = new JPanel(new GridLayout(6, 2, 10, 10));
-        addCourseForm.setBorder(BorderFactory.createTitledBorder("Add Course"));
 
         JTextField newCourseCode = new JTextField();
         JTextField newCourseName = new JTextField();
@@ -381,9 +397,16 @@ public class AdminPanel extends JFrame {
             }
         });
 
+        addCourseForm.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
 
-        coursesPanel.add(courseScroll, BorderLayout.CENTER);
-        coursesPanel.add(addCourseForm, BorderLayout.SOUTH);
+        JPanel tableCard = createCardPanel("Courses");
+        tableCard.add(courseScroll, BorderLayout.CENTER);
+
+        JPanel formCard = createCardPanel("Add Course");
+        formCard.add(addCourseForm, BorderLayout.CENTER);
+
+        coursesPanel.add(tableCard, BorderLayout.CENTER);
+        coursesPanel.add(formCard, BorderLayout.SOUTH);
 
         refreshCourseTable();
 
@@ -394,26 +417,21 @@ public class AdminPanel extends JFrame {
         JPanel overviewPanel = new JPanel(new BorderLayout(10, 10));
         overviewPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        JPanel statsPanel = new JPanel(new GridLayout(2, 5, 10, 10));
-        statsPanel.setBorder(BorderFactory.createTitledBorder("System Overview"));
-
         totalUsersLabel = new JLabel();
         totalStudentsLabel = new JLabel();
         totalInstructorsLabel = new JLabel();
         totalCoursesLabel = new JLabel();
         totalEnrollmentsLabel = new JLabel();
 
-        statsPanel.add(new JLabel("Total Users:"));
-        statsPanel.add(new JLabel("Students:"));
-        statsPanel.add(new JLabel("Instructors:"));
-        statsPanel.add(new JLabel("Courses:"));
-        statsPanel.add(new JLabel("Enrollments:"));
+        JPanel statsPanel = new JPanel(new GridLayout(1, 5, 15, 15));
+        statsPanel.add(createStatCard("Total Users:", totalUsersLabel));
+        statsPanel.add(createStatCard("Students:", totalStudentsLabel));
+        statsPanel.add(createStatCard("Instructors:", totalInstructorsLabel));
+        statsPanel.add(createStatCard("Courses:", totalCoursesLabel));
+        statsPanel.add(createStatCard("Enrollments:", totalEnrollmentsLabel));
 
-        statsPanel.add(totalUsersLabel);
-        statsPanel.add(totalStudentsLabel);
-        statsPanel.add(totalInstructorsLabel);
-        statsPanel.add(totalCoursesLabel);
-        statsPanel.add(totalEnrollmentsLabel);
+        JPanel statsCard = createCardPanel("System Overview");
+        statsCard.add(statsPanel, BorderLayout.CENTER);
 
         String[] overviewColumns = {"Course Code", "Course Name", "Instructor", "Quota", "Enrolled"};
         overviewTableModel = new DefaultTableModel(overviewColumns, 0) {
@@ -423,10 +441,14 @@ public class AdminPanel extends JFrame {
         };
 
         JTable overviewTable = new JTable(overviewTableModel);
+        styleTable(overviewTable);
         JScrollPane overviewScroll = new JScrollPane(overviewTable);
 
-        overviewPanel.add(statsPanel, BorderLayout.NORTH);
-        overviewPanel.add(overviewScroll, BorderLayout.CENTER);
+        JPanel tableCard = createCardPanel("Course Enrollment Summary");
+        tableCard.add(overviewScroll, BorderLayout.CENTER);
+
+        overviewPanel.add(statsCard, BorderLayout.NORTH);
+        overviewPanel.add(tableCard, BorderLayout.CENTER);
 
         refreshOverview();
 
@@ -525,6 +547,38 @@ public class AdminPanel extends JFrame {
             new LoginFrame(ds);
         }
     }
+    private void styleTable(JTable table) {
+        table.setRowHeight(30);
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        table.setFillsViewportHeight(true);
+        table.getTableHeader().setReorderingAllowed(false);
+        table.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
+    }
+
+    private JPanel createCardPanel(String title) {
+        JPanel panel = new JPanel(new BorderLayout(10, 10));
+        panel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createTitledBorder(title),
+                BorderFactory.createEmptyBorder(10, 10, 10, 10)
+        ));
+        return panel;
+    }
+    private JPanel createStatCard(String title, JLabel valueLabel) {
+        JPanel card = new JPanel(new BorderLayout(5, 5));
+        card.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Color.GRAY),
+                BorderFactory.createEmptyBorder(15, 20, 15, 20)
+        ));
+
+        valueLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        valueLabel.setFont(new Font("Arial", Font.BOLD, 24));
+
+        JLabel titleLabel = new JLabel(title, SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Arial", Font.PLAIN, 13));
+
+        card.add(valueLabel, BorderLayout.CENTER);
+        card.add(titleLabel, BorderLayout.SOUTH);
+
+        return card;
+    }
 }
-
-

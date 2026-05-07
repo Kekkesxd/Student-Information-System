@@ -15,28 +15,62 @@ public class LoginFrame extends JFrame{
     public LoginFrame(DataStore ds){
         this.ds = ds;
         setTitle("University Automation App");
-        setSize(350,200 );
+        setSize(700,450 );
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        JPanel panel = new JPanel(new GridLayout(3, 2, 10 ,10));
-        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20 ,20));
+        JPanel mainPanel = new JPanel(new GridBagLayout());
 
-        panel.add(new JLabel("Username:"));
-        usernameField = new JTextField();
-        panel.add(usernameField);
+        JPanel loginCard = new JPanel(new GridBagLayout());
+        loginCard.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createTitledBorder("Login"),
+                BorderFactory.createEmptyBorder(25, 30, 25, 30)
+        ));
 
-        panel.add(new JLabel("Password:"));
-        passwordField = new JPasswordField();
-        panel.add(passwordField);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+
+        JLabel titleLabel = new JLabel("Student Information System", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 22));
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        loginCard.add(titleLabel, gbc);
+
+        gbc.gridwidth = 1;
+
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        loginCard.add(new JLabel("Username:"), gbc);
+
+        gbc.gridx = 1;
+        usernameField = new JTextField(18);
+        loginCard.add(usernameField, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        loginCard.add(new JLabel("Password:"), gbc);
+
+        gbc.gridx = 1;
+        passwordField = new JPasswordField(18);
+        loginCard.add(passwordField, gbc);
 
         JButton loginButton = new JButton("Login");
-        panel.add(new JLabel());
-        panel.add(loginButton);
 
-        loginButton.addActionListener(e-> handleLogin());
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.gridwidth = 2;
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.anchor = GridBagConstraints.CENTER;
+        loginCard.add(loginButton, gbc);
 
-        add(panel);
+        loginButton.addActionListener(e -> handleLogin());
+
+        mainPanel.add(loginCard);
+        add(mainPanel);
+
         setVisible(true);
     }
 

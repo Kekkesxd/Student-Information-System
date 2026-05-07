@@ -71,9 +71,13 @@ public class InstructorPanel extends JFrame{
         };
 
         JTable table = new JTable(myCoursesModel);
+        styleTable(table);
         JScrollPane scrollPane = new JScrollPane(table);
 
-        panel.add(scrollPane, BorderLayout.CENTER);
+        JPanel tableCard= createCardPanel("Assigned Courses");
+        tableCard.add(scrollPane, BorderLayout.CENTER);
+
+        panel.add(tableCard, BorderLayout.CENTER);
 
         refreshMyCoursesTable();
 
@@ -101,6 +105,7 @@ public class InstructorPanel extends JFrame{
         };
 
         JTable studentTable = new JTable(gradesModel);
+        styleTable(studentTable);
         JScrollPane scrollPane = new JScrollPane(studentTable);
         studentTable.getSelectionModel().addListSelectionListener(e-> {
             if(!e.getValueIsAdjusting()){
@@ -117,7 +122,6 @@ public class InstructorPanel extends JFrame{
         });
 
         JPanel bottomPanel = new JPanel(new GridLayout(2,4,10,10));
-        bottomPanel.setBorder(BorderFactory.createTitledBorder("Enter / Update Grade"));
 
         midField = new JTextField();
         finalField = new JTextField();
@@ -151,9 +155,18 @@ public class InstructorPanel extends JFrame{
         loadStudentBtn.addActionListener(e-> refreshGradeTable());
         courseCombo.addActionListener(e-> refreshGradeTable());
 
-        panel.add(topPanel, BorderLayout.NORTH);
-        panel.add(scrollPane, BorderLayout.CENTER);
-        panel.add(bottomPanel, BorderLayout.SOUTH);
+        JPanel courseCard = createCardPanel("Select Course");
+        courseCard.add(topPanel, BorderLayout.CENTER);
+
+        JPanel studentCard = createCardPanel("Students in Selected Course");
+        studentCard.add(scrollPane, BorderLayout.CENTER);
+
+        JPanel gradeCard = createCardPanel("Enter / Update Grade");
+        gradeCard.add(bottomPanel, BorderLayout.CENTER);
+
+        panel.add(courseCard, BorderLayout.NORTH);
+        panel.add(studentCard, BorderLayout.CENTER);
+        panel.add(gradeCard, BorderLayout.SOUTH);
 
         refreshCourseCombo();
         refreshGradeTable();
@@ -272,5 +285,31 @@ public class InstructorPanel extends JFrame{
             this.dispose();
             new LoginFrame(ds);
         }
+    }
+    private void styleTable(JTable table) {
+        table.setRowHeight(30);
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        table.setFillsViewportHeight(true);
+        table.getTableHeader().setReorderingAllowed(false);
+        table.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
+    }
+
+    private JPanel createCardPanel(String title) {
+        JPanel panel = new JPanel(new BorderLayout(10, 10));
+        panel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createTitledBorder(title),
+                BorderFactory.createEmptyBorder(10, 10, 10, 10)
+        ));
+        return panel;
+    }
+
+    private JPanel createButtonPanel(JButton... buttons) {
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 5));
+
+        for (JButton button : buttons) {
+            panel.add(button);
+        }
+
+        return panel;
     }
 }
