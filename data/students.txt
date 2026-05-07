@@ -1,2 +1,3 @@
 230303905,Majid Shahani,Computer Engineering,2022,Sovran
 230303902,Armin,Gastronomy,2023,Wanderer
+230303942,Ali Mali,Fashion and Design,2012,AliMali

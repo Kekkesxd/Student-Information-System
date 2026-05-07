@@ -118,17 +118,19 @@ public class InstructorPanel extends JPanel{
             }
         });
 
-        JPanel bottomPanel = new JPanel(new GridLayout(2,4,10,10));
+        JPanel bottomPanel = new JPanel(new GridLayout(3,4,10,10));
 
         midField = new JTextField();
         finalField = new JTextField();
         JButton saveGradeBtn = new JButton("Save Grade");
+        saveGradeBtn.setFocusPainted(false);
 
         saveGradeBtn.addActionListener(e -> {
             int selectedRow = studentTable.getSelectedRow();
 
             if(selectedRow == -1){
-                JOptionPane.showMessageDialog(this, "Please select a student First.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this,
+                        "Please select a student First.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
@@ -144,9 +146,6 @@ public class InstructorPanel extends JPanel{
         bottomPanel.add(new JLabel("Final:"));
         bottomPanel.add(finalField);
 
-        bottomPanel.add(new JLabel());
-        bottomPanel.add(new JLabel());
-        bottomPanel.add(new JLabel());
         bottomPanel.add(saveGradeBtn);
 
         loadStudentBtn.addActionListener(e-> refreshGradeTable());
@@ -234,12 +233,14 @@ public class InstructorPanel extends JPanel{
         String finalText = finalField.getText().trim();
 
         if (midtermText.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please enter midterm grade.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this,
+                    "Please enter midterm grade.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         if (finalText.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please enter final grade.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this,
+                    "Please enter final grade.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -248,12 +249,14 @@ public class InstructorPanel extends JPanel{
             double finalExam = Double.parseDouble(finalText);
 
             if (midterm < 0 || midterm > 100) {
-                JOptionPane.showMessageDialog(this, "Grade can't be negative or above 100.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this,
+                        "Grade can't be negative or above 100.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
             if (finalExam < 0 || finalExam > 100) {
-                JOptionPane.showMessageDialog(this, "Grade can't be negative or above 100.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this,
+                        "Grade can't be negative or above 100.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
@@ -264,10 +267,11 @@ public class InstructorPanel extends JPanel{
             midField.setText("");
             finalField.setText("");
 
-            JOptionPane.showMessageDialog(this, "Grade saved successfully.");
-
+            JOptionPane.showMessageDialog(this,
+                    "Grade saved successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
         } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this, "Grades must be numeric.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this,
+                    "Grades must be numeric.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
     private void logout() {

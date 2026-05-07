@@ -216,10 +216,48 @@ public class DataStore {
     }
 
     public void removeEnrollment(String studentUsername, String courseCode) {
-        enrollments.removeIf(e -> e.studentUsername.equals(studentUsername) && e.courseCode.equals(courseCode)); //built-in method that removes if true
+        enrollments.removeIf(e -> e.studentUsername.equals(studentUsername) &&
+                e.courseCode.equals(courseCode)); //built-in method that removes if true
         saveEnrollments();
     }
 
+    public void deleteCourse(String courseCode){
+        courses.removeIf(c -> c.courseCode.equals(courseCode));
+
+        enrollments.removeIf(e-> e.courseCode.equals(courseCode));
+        grades.removeIf(g-> g.courseCode.equals(courseCode));
+
+        saveCourses();
+        saveEnrollments();
+        saveGrades();
+    }
+
+    public void deleteStudentProfile(String studentUsername){
+        students.removeIf(s-> s.username.equals(studentUsername));
+
+        enrollments.removeIf(e->e.studentUsername.equals(studentUsername));
+        grades.removeIf(g-> g.studentUsername.equals(studentUsername));
+
+        saveStudents();
+        saveEnrollments();
+        saveGrades();
+    }
+
+    public void deleteUser(String username){
+        User user = findUser(username);
+
+        if(user == null){
+            return;
+        }
+
+        if(user.role.equals("STUDENT")){
+            deleteStudentProfile(username);
+        }
+
+        users.removeIf(u-> u.username.equals(username));
+
+        saveUsers();
+    }
     public GradeRecord findGrade(String studentUsername, String courseCode) {
         for (GradeRecord grade : grades) {
             if (grade.studentUsername.equals(studentUsername) && grade.courseCode.equals(courseCode)) {

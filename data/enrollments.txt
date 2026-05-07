@@ -1,5 +1,2 @@
-Sovran,LCEN001
-Wanderer,LCEN001
-Wanderer,LCEN005
-Sovran,LCEN005
-Wanderer,LCEN002
+Wanderer,LCEN142
+Sovran,LCEN142

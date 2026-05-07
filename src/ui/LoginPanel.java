@@ -68,6 +68,7 @@ public class LoginPanel extends JPanel{
         loginCard.add(loginButton, gbc);
 
         loginButton.addActionListener(e -> handleLogin());
+        app.getRootPane().setDefaultButton(loginButton);
 
         mainPanel.add(loginCard);
         add(mainPanel);

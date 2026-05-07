@@ -1,3 +1,1 @@
-LCEN001,Something Something,90,40,Soren
-LCEN002,SomethingForSOmething,100,60,Soren
-LCEN005,forSomethingSomething,100,30,Abdu
+LCEN142,Visual Studio For Beginners,7,100,MALIN

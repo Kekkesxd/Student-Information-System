@@ -91,6 +91,7 @@ public class AdminPanel extends JPanel {
         JTextField newFullName = new JTextField();
         JTextField newRefID = new JTextField();
         JButton addUserBtn = new JButton("Add User");
+        JButton deleteUserBtn = new JButton("Remove User");
 
         addUserForm.add(new JLabel("Username:"));
         addUserForm.add(newUsername);
@@ -121,15 +122,30 @@ public class AdminPanel extends JPanel {
                 JOptionPane.showMessageDialog(this, "Please Enter a Username", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
+            if(uname.length() > 20){
+                JOptionPane.showMessageDialog(this, "Username cannot be longer than 20 characters", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
             if (pass.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Please Enter a Password", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if(pass.length() > 20){
+                JOptionPane.showMessageDialog(this, "Password cannot be longer than 20 characters", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             if (fname.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Please Enter Full name", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-
+            if(fname.length() > 50){
+                JOptionPane.showMessageDialog(this, "Full name cannot be longer than 50 characters", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if(refid.length() > 10){
+                JOptionPane.showMessageDialog(this, "Reference ID cannot be longer than 10 characters", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
             if (ds.findUser(uname) != null) {
                 JOptionPane.showMessageDialog(this, "Username already exists", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -142,12 +158,64 @@ public class AdminPanel extends JPanel {
             newPassword.setText("");
             newFullName.setText("");
             newRefID.setText("");
-
             refreshUserTable();
             refreshCombos();
             refreshOverview();
 
             JOptionPane.showMessageDialog(this, "User added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+        });
+
+        newUsername.addActionListener(e-> addUserBtn.doClick());
+        newPassword.addActionListener(e-> addUserBtn.doClick());
+        newFullName.addActionListener(e-> addUserBtn.doClick());
+        newRefID.addActionListener(e-> addUserBtn.doClick());
+
+        deleteUserBtn.addActionListener(e -> {
+            int selectedRow = userTable.getSelectedRow();
+
+            if (selectedRow == -1) {
+                JOptionPane.showMessageDialog(this, "Please select a user first.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            String username = userTableModel.getValueAt(selectedRow, 0).toString();
+            String role = userTableModel.getValueAt(selectedRow, 1).toString();
+
+            if (username.equals(currUser.username)) {
+                JOptionPane.showMessageDialog(this, "You cannot delete the currently logged-in admin.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            if (role.equals("INSTRUCTOR") && !ds.getCoursesByInstructor(username).isEmpty()) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "This instructor has assigned courses. Delete those courses first.",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE
+                );
+                return;
+            }
+
+            int confirm = JOptionPane.showConfirmDialog(
+                    this,
+                    "Are you sure you want to delete user: " + username + "?",
+                    "Confirm Delete",
+                    JOptionPane.YES_NO_OPTION
+            );
+
+            if (confirm != JOptionPane.YES_OPTION) {
+                return;
+            }
+
+            ds.deleteUser(username);
+
+            refreshUserTable();
+            refreshStudentTable();
+            refreshCourseTable();
+            refreshOverview();
+            refreshCombos();
+
+            JOptionPane.showMessageDialog(this, "User deleted successfully.");
         });
 
         refreshUserTable();
@@ -156,6 +224,10 @@ public class AdminPanel extends JPanel {
 
         JPanel tableCard = createCardPanel("Users");
         tableCard.add(userScroll, BorderLayout.CENTER);
+
+        JPanel deleteUserPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        deleteUserPanel.add(deleteUserBtn);
+        tableCard.add(deleteUserPanel, BorderLayout.SOUTH);
 
         JPanel formCard = createCardPanel("Add User");
         formCard.add(addUserForm, BorderLayout.CENTER);
@@ -192,6 +264,7 @@ public class AdminPanel extends JPanel {
         JTextField newDepartment = new JTextField();
         JTextField newYear = new JTextField();
         JButton addStudentBtn = new JButton("Add Student");
+        JButton deleteStudentBtn = new JButton("Remove Student");
 
         addStudentForm.add(new JLabel("Student ID:"));
         addStudentForm.add(newStudentID);
@@ -222,16 +295,32 @@ public class AdminPanel extends JPanel {
                 JOptionPane.showMessageDialog(this, "Please Enter your ID", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
+            if(sid.length() > 10){
+                JOptionPane.showMessageDialog(this, "Student ID cannot be longer than 20 characters", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
             if (fullname.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Please Enter your name", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if(fullname.length() > 50){
+                JOptionPane.showMessageDialog(this, "Full name cannot be longer than 50 characters", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             if (dept.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Please Enter your Department", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
+            if(dept.length() > 30){
+                JOptionPane.showMessageDialog(this, "Department cannot be longer than 30 characters", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
             if (yearStr.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Please Enter The Year", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if(yearStr.length() != 4){
+                JOptionPane.showMessageDialog(this, "Year must 4 digits", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             if (username == null) {
@@ -271,10 +360,48 @@ public class AdminPanel extends JPanel {
             }
         });
 
+        newStudentID.addActionListener(e-> addStudentBtn.doClick());
+        newStudentName.addActionListener(e-> addStudentBtn.doClick());
+        newDepartment.addActionListener(e-> addStudentBtn.doClick());
+        newYear.addActionListener(e-> addStudentBtn.doClick());
+
+        deleteStudentBtn.addActionListener(e -> {
+            int selectedRow = studentTable.getSelectedRow();
+
+            if (selectedRow == -1) {
+                JOptionPane.showMessageDialog(this, "Please select a student profile first.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            String studentUsername = studentTableModel.getValueAt(selectedRow, 4).toString();
+
+            int confirm = JOptionPane.showConfirmDialog(
+                    this,
+                    "Delete student profile for: " + studentUsername + "?\nThis will also remove their enrollments and grades.",
+                    "Confirm Delete",
+                    JOptionPane.YES_NO_OPTION
+            );
+
+            if (confirm != JOptionPane.YES_OPTION) {
+                return;
+            }
+
+            ds.deleteStudentProfile(studentUsername);
+
+            refreshStudentTable();
+            refreshOverview();
+
+            JOptionPane.showMessageDialog(this, "Student profile deleted successfully.");
+        });
+
         addStudentForm.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
 
         JPanel tableCard = createCardPanel("Student Profiles");
         tableCard.add(studentScroll, BorderLayout.CENTER);
+
+        JPanel deleteStudentPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        deleteStudentPanel.add(deleteStudentBtn);
+        tableCard.add(deleteStudentPanel, BorderLayout.SOUTH);
 
         JPanel formCard = createCardPanel("Add Student Profile");
         formCard.add(addStudentForm, BorderLayout.CENTER);
@@ -312,6 +439,7 @@ public class AdminPanel extends JPanel {
         JTextField newCredit = new JTextField();
         JTextField newQuota = new JTextField();
         JButton addCourseBtn = new JButton("Add Course");
+        JButton deleteCourseBtn = new JButton("Remove Course");
 
         addCourseForm.add(new JLabel("Course Code:"));
         addCourseForm.add(newCourseCode);
@@ -346,6 +474,10 @@ public class AdminPanel extends JPanel {
                 JOptionPane.showMessageDialog(this, "Please Enter Course Code", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
+            if(code.length() > 15){
+                JOptionPane.showMessageDialog(this, "Course Code cannot be longer than 15 characters", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
             if (ds.findCourse(code) != null) {
                 JOptionPane.showMessageDialog(this, "Course Code already exists", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -354,12 +486,24 @@ public class AdminPanel extends JPanel {
                 JOptionPane.showMessageDialog(this, "Please Enter Course Name", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
+            if(name.length() > 60){
+                JOptionPane.showMessageDialog(this, "Course Name cannot be longer than 60 characters", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
             if (creditStr.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Please Enter the amount of credits", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
+            if(creditStr.length() > 2){
+                JOptionPane.showMessageDialog(this, "Credts must be atleast one digit, Two digits max", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
             if (quotaStr.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Please Enter The Quota", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if(quotaStr.length() > 3){
+                JOptionPane.showMessageDialog(this, "Quota cannot be longer than 3 digits", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
@@ -394,10 +538,47 @@ public class AdminPanel extends JPanel {
             }
         });
 
+        newCourseCode.addActionListener(e-> addCourseBtn.doClick());
+        newCourseName.addActionListener(e-> addCourseBtn.doClick());
+        newCredit.addActionListener(e-> addCourseBtn.doClick());
+        newQuota.addActionListener(e-> addCourseBtn.doClick());
+
+        deleteCourseBtn.addActionListener(e -> {
+            int selectedRow = courseTable.getSelectedRow();
+
+            if(selectedRow == -1){
+                JOptionPane.showMessageDialog(this, "Please select a course first", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            String courseCode = courseTableModel.getValueAt(selectedRow,0).toString();
+            int confirm = JOptionPane.showConfirmDialog(
+                    this,
+                    "Delete course: " + courseCode + "?\nThis will also remove related enrollments and grades.",
+                    "Confirm Delete",
+                    JOptionPane.YES_NO_OPTION
+            );
+
+            if (confirm != JOptionPane.YES_OPTION) {
+                return;
+            }
+
+            ds.deleteCourse(courseCode);
+
+            refreshCourseTable();
+            refreshOverview();
+
+            JOptionPane.showMessageDialog(this, "Course deleted successfully.");
+        });
+
         addCourseForm.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
 
         JPanel tableCard = createCardPanel("Courses");
         tableCard.add(courseScroll, BorderLayout.CENTER);
+
+        JPanel deleteCoursePanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        deleteCoursePanel.add(deleteCourseBtn);
+        tableCard.add(deleteCoursePanel, BorderLayout.SOUTH);
 
         JPanel formCard = createCardPanel("Add Course");
         formCard.add(addCourseForm, BorderLayout.CENTER);
