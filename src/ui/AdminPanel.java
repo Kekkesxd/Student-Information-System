@@ -26,10 +26,22 @@ public class AdminPanel extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout(10, 10));
 
-        JLabel headerLabel = new JLabel("Admin Panel - Logged in as: " + currUser.fullName);
-        headerLabel.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
-        headerLabel.setFont(new Font("Arial", Font.BOLD, 18));
-        add(headerLabel, BorderLayout.NORTH);
+        JPanel headPanel = new JPanel(new BorderLayout());
+
+        JLabel headLabel = new JLabel("Admin Panel - Logged in as: " + currUser.fullName);
+        headLabel.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
+        headLabel.setFont(new Font("Arial", Font.BOLD, 18));
+
+        JButton logoutBtn = new JButton("Logout");
+        logoutBtn.addActionListener(e -> logout());
+
+        JPanel rightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        rightPanel.add(logoutBtn);
+
+        headPanel.add(headLabel, BorderLayout.CENTER);
+        headPanel.add(rightPanel, BorderLayout.EAST);
+
+        add(headPanel, BorderLayout.NORTH);
 
         studentUserCombo = new JComboBox<>();
         instructorCombo = new JComboBox<>();
@@ -37,10 +49,13 @@ public class AdminPanel extends JFrame {
 
         JTabbedPane tabs = new JTabbedPane();
 
+
+
+        tabs.addTab("Overview", createOverviewPanel());
         tabs.addTab("Users", createUsersPanel());
         tabs.addTab("Students", createStudentsPanel());
         tabs.addTab("Courses", createCoursePanel());
-        tabs.addTab("Overview", createOverviewPanel());
+
 
         tabs.addChangeListener(e -> {
             refreshUserTable();
@@ -495,6 +510,19 @@ public class AdminPanel extends JFrame {
             } else if (u.role.equals("INSTRUCTOR")) {
                 instructorCombo.addItem(u.username);
             }
+        }
+    }
+    private void logout() {
+        int confirm = JOptionPane.showConfirmDialog(
+                this,
+                "Are you sure you want to logout?",
+                "Logout",
+                JOptionPane.YES_NO_OPTION
+        );
+
+        if (confirm == JOptionPane.YES_OPTION) {
+            this.dispose();
+            new LoginFrame(ds);
         }
     }
 }

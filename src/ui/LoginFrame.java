@@ -60,9 +60,19 @@ public class LoginFrame extends JFrame{
         }
 
         this.dispose();
+
         switch (user.role){
             case "ADMIN":
                 new AdminPanel(ds, user);
+                break;
+            case "STUDENT":
+                new StudentPanel(ds, user);
+                break;
+            case "INSTRUCTOR":
+                new InstructorPanel(ds, user);
+                break;
+            default:
+                JOptionPane.showMessageDialog(null, "Unknown role: " + user.role, "Error", JOptionPane.ERROR_MESSAGE);
                 break;
         }
     }

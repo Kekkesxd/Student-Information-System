@@ -1,0 +1,2 @@
+Sovran,LCEN001,50.0,100.0
+Wanderer,LCEN005,100.0,100.0
