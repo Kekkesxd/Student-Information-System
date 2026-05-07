@@ -256,10 +256,26 @@ public class DataStore {
         for(GradeRecord grade : studentGrades){
             Course course = findCourse(grade.courseCode);
             if(course != null){
-                totalPoints += grade.calcAverage() * course.credit;
+                double gradePoint = letterToGPAPoint(grade.getLetterGrade());
+
+                totalPoints += gradePoint * course.credit;
                 totalCredits += course.credit;
             }
         }
         return totalCredits == 0 ? 0.0 : totalPoints / totalCredits;
+    }
+
+    private double letterToGPAPoint(String letterGrade){
+        switch (letterGrade){
+            case "AA": return 4.0;
+            case "BA": return 3.5;
+            case "BB": return 3.0;
+            case "CB": return 2.5;
+            case "CC": return 2.0;
+            case "DC": return 1.5;
+            case "DD": return 1.0;
+            case "FD": return 0.5;
+            default: return 0.0;
+        }
     }
 }
