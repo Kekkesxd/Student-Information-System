@@ -282,7 +282,7 @@ public class DataStore {
         GradeRecord existing = findGrade(studentUsername, courseCode);
         if(existing != null){
             existing.midterm =midterm;
-            existing.finalexam =finalExam;
+            existing.finalExam =finalExam;
         }else {
             grades.add(new GradeRecord(studentUsername, courseCode, midterm, finalExam));
         }

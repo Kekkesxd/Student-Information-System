@@ -9,7 +9,7 @@ import javax.swing.*;
 public class UniversityAutoApp extends JFrame {
     public static DataStore ds = new DataStore();
 
-    public UniversityAutoApp(DataStore ds) {
+    public UniversityAutoApp() {
         setTitle("University Automation App");
         setSize(950, 680);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -65,7 +65,7 @@ public class UniversityAutoApp extends JFrame {
     public static void main(String[] args) {
         ds.initialize();
 
-        SwingUtilities.invokeLater(() -> new UniversityAutoApp(ds));
+        SwingUtilities.invokeLater(() -> new UniversityAutoApp());
 
     }
 }

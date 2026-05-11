@@ -214,7 +214,7 @@ public class StudentPanel extends JPanel{
             String courseName = c != null ? c.courseName : "Unknown";
             int credits = c!= null ? c.credit : 0;
 
-            transcModel.addRow(new Object[]{g.courseCode, courseName, credits, g.midterm, g.finalexam, String.format("%.2f", g.calcAverage()), g.getLetterGrade()});
+            transcModel.addRow(new Object[]{g.courseCode, courseName, credits, g.midterm, g.finalExam, String.format("%.2f", g.calcAverage()), g.getLetterGrade()});
         }
 
         if(gpaLabel != null){

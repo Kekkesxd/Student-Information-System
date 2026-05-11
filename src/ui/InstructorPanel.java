@@ -221,7 +221,7 @@ public class InstructorPanel extends JPanel{
 
             if(grade != null){
                 midValue = grade.midterm;
-                finalexamValue = grade.finalexam;
+                finalexamValue = grade.finalExam;
                 avgValue = String.format("%.2f", grade.calcAverage());
                 letterValue = grade.getLetterGrade();
             }

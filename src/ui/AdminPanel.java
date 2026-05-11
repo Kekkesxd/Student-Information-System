@@ -86,7 +86,7 @@ public class AdminPanel extends JPanel {
         JPanel addUserForm = new JPanel(new GridLayout(6, 2, 10, 10));
 
         JTextField newUsername = new JTextField();
-        JTextField newPassword = new JTextField();
+        JTextField newPassword = new JPasswordField();
         JComboBox<String> roleCombo = new JComboBox<>(new String[]{"ADMIN", "INSTRUCTOR", "STUDENT"});
         JTextField newFullName = new JTextField();
         JTextField newRefID = new JTextField();
