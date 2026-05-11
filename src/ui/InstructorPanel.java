@@ -118,7 +118,7 @@ public class InstructorPanel extends JPanel{
             }
         });
 
-        JPanel bottomPanel = new JPanel(new GridLayout(3,4,10,10));
+        JPanel bottomPanel = new JPanel(new GridLayout(2,3,10,10));
 
         midField = new JTextField();
         finalField = new JTextField();
@@ -142,11 +142,13 @@ public class InstructorPanel extends JPanel{
 
         bottomPanel.add(new JLabel("Midterm:"));
         bottomPanel.add(midField);
+        bottomPanel.add(saveGradeBtn);
 
         bottomPanel.add(new JLabel("Final:"));
         bottomPanel.add(finalField);
+        bottomPanel.add(new JLabel(""));
 
-        bottomPanel.add(saveGradeBtn);
+
 
         loadStudentBtn.addActionListener(e-> refreshGradeTable());
         courseCombo.addActionListener(e-> refreshGradeTable());
