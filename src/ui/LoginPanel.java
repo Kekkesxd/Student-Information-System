@@ -76,7 +76,7 @@ public class LoginPanel extends JPanel{
 
     private void handleLogin() {
         String username = usernameField.getText().trim();
-        String password = new String(passwordField.getPassword()).trim();
+        String password = new String(passwordField.getPassword());
 
         if (username.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter your username!", "Error", JOptionPane.ERROR_MESSAGE);
@@ -86,7 +86,10 @@ public class LoginPanel extends JPanel{
             JOptionPane.showMessageDialog(this, "Please Enter your password!", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-
+        if (password.matches(".*\\s.*")) {
+            JOptionPane.showMessageDialog(this, "Password cannot contain spaces!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         User user = ds.authenticate(username, password);
         if (user == null) {
             JOptionPane.showMessageDialog(this, "Invalid username or password!", "Error", JOptionPane.ERROR_MESSAGE);

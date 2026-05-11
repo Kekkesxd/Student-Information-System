@@ -113,7 +113,7 @@ public class AdminPanel extends JPanel {
 
         addUserBtn.addActionListener(e -> {
             String uname = newUsername.getText().trim();
-            String pass = newPassword.getText().trim();
+            String pass = newPassword.getText();
             String role = (String) roleCombo.getSelectedItem();
             String fname = newFullName.getText().trim();
             String refid = newRefID.getText().trim();
@@ -128,6 +128,10 @@ public class AdminPanel extends JPanel {
             }
             if (pass.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Please Enter a Password", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if (pass.matches(".*\\s.*")) {
+                JOptionPane.showMessageDialog(this, "Password cannot contain spaces", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             if(pass.length() > 20){
@@ -148,6 +152,10 @@ public class AdminPanel extends JPanel {
             }
             if (ds.findUser(uname) != null) {
                 JOptionPane.showMessageDialog(this, "Username already exists", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if(containsComma(uname, pass,fname,refid)){
+                JOptionPane.showMessageDialog(this, "fields cannot contain commas", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
@@ -335,6 +343,10 @@ public class AdminPanel extends JPanel {
                 JOptionPane.showMessageDialog(this, "Student ID already exists", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
+            if(containsComma(sid, fullname, dept,yearStr)){
+                JOptionPane.showMessageDialog(this, "Fields cannot contain commas", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
             try {
                 int year = Integer.parseInt(yearStr);
@@ -504,6 +516,10 @@ public class AdminPanel extends JPanel {
             }
             if(quotaStr.length() > 3){
                 JOptionPane.showMessageDialog(this, "Quota cannot be longer than 3 digits", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if(containsComma(code, name, creditStr, quotaStr)){
+                JOptionPane.showMessageDialog(this, "fields cannot contain commas", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
@@ -757,5 +773,15 @@ public class AdminPanel extends JPanel {
         card.add(titleLabel, BorderLayout.SOUTH);
 
         return card;
+    }
+
+    //helper for data save not breaking
+    private boolean containsComma(String...values){
+        for(String value : values){
+            if(value != null && value.contains(",")){
+                return true;
+            }
+        }
+        return false;
     }
 }
